@@ -1,0 +1,14 @@
+{
+  "categorias": [
+    {
+      "nome": "Front End",
+      "descricao": "Uma categoria front",
+      "cor": "#6bd1ff"
+    },
+    {
+      "nome": "Back End",
+      "descricao": "Uma categoria back",
+      "cor": "#6bd1ff"
+    }
+  ]
+}

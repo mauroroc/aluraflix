@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+/* eslint-disable react/no-array-index-key */
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
+import Button from '../../../components/Button';
 
 function CadastroCategoria() {
   const [categorias, setCategorias] = useState([]);
@@ -9,7 +11,7 @@ function CadastroCategoria() {
     nome: '',
     descricao: '',
     cor: '#000',
-  }
+  };
   const [values, setValues] = useState(valoresIniciais);
 
   function setValor(chave, valor) {
@@ -20,9 +22,16 @@ function CadastroCategoria() {
   }
 
   function handleChange(ev) {
-    setValor(ev.target.getAttribute('name'), 
-    ev.target.value)
+    setValor(ev.target.getAttribute('name'), ev.target.value);
   }
+
+  useEffect(() => {
+    const urlApi = 'http://localhost:8080/categorias';
+    fetch(urlApi).then(async (res) => {
+      const resJson = await res.json();
+      setCategorias([...resJson]);
+    });
+  }, []);
 
   return (
     <PageDefault>
@@ -32,35 +41,35 @@ function CadastroCategoria() {
         ev.preventDefault();
         setCategorias([
           ...categorias,
-          values
+          values,
         ]);
         setValues(valoresIniciais);
-      }}>
+      }}
+      >
         <div>
           <FormField name="nome" type="text" value={values.nome} onChange={handleChange} />
           <FormField name="descricao" type="textarea" value={values.descricao} onChange={handleChange} />
-          <FormField name="cor" type="color" value={values.cor} onChange={handleChange} />            
+          <FormField name="cor" type="color" value={values.cor} onChange={handleChange} />
         </div>
 
-        <button>
+        <Button>
           Cadastrar
-        </button>
+        </Button>
       </form>
 
       <ul>
-        {categorias.map((categoria, indice) => {
-          return (
-            <li key={`${categoria}${indice}`}>
-              {categoria.nome}</li>
-          )          
-        })}
+        {categorias.map((categoria, indice) => (
+          <li key={`${categoria}${indice}`}>
+            {categoria.nome}
+          </li>
+        ))}
       </ul>
 
       <Link to="/">
         Ir para Home
       </Link>
     </PageDefault>
-  )
+  );
 }
 
 export default CadastroCategoria;
